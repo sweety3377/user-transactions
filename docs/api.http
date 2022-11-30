@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/users
+Content-Type: application/json
+Accept: application/json
+
+###
+
+POST http://localhost:8080/api/withdraw
+Content-Type: application/json
+Accept: application/json
