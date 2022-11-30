@@ -88,15 +88,10 @@ func (s *Storage) Deposit(c *gin.Context) {
 		return
 	}
 
-	newBalance := user.Balance - req.Amount
-	if newBalance < 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "small balance error"})
-		return
-	}
+	user.Balance = user.Balance + req.Amount
 
-	user.Balance = newBalance
+	sql, _, _ = squirrel.Update("clients").Set("balance = ?", user.Balance).ToSql()
 
-	sql, _, _ = squirrel.Update("clients").Set("balance = ?", newBalance).ToSql()
 	_, err = s.pool.Exec(c.Request.Context(), sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bind user model error"})
