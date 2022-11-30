@@ -6,6 +6,7 @@ import (
 	"blackwallgroup/internal/api"
 	"blackwallgroup/internal/repository"
 	"blackwallgroup/internal/service"
+	"blackwallgroup/queue"
 	"context"
 	"log"
 	"os"
@@ -27,10 +28,12 @@ func main() {
 	}
 	defer pool.Close()
 
+	transactionQueue := queue.NewQueue()
+
 	userRepository := repository.NewStorage(pool)
 	userService := service.NewUserService(userRepository)
 
-	srv := api.NewServer(pool, userService)
+	srv := api.NewServer(pool, transactionQueue, userService)
 	go func() {
 		if err = srv.Start(cfg.HttpPort); err != nil {
 			log.Fatalln(err)
