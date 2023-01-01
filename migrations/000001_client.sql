@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS clients
     created_at TIMESTAMP NOT NULL
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_users_id ON clients.clients(id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_clients_id ON clients.clients(id);
